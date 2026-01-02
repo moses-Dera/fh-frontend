@@ -2,13 +2,23 @@
 
 import { Bell, Menu, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useAPI } from "@/lib/api";
 
 interface DashboardHeaderProps {
     onMenuClick: () => void;
 }
 
+interface Notification {
+    id: number;
+    type: string;
+    payload: any;
+    read: boolean;
+    createdAt: string;
+}
+
 export const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
     const pathname = usePathname();
+    const { data: notifications } = useAPI<Notification[]>('/api/notifications', { autoFetch: true });
 
     // Simple breadcrumb logic
     const getPageTitle = () => {
@@ -40,10 +50,58 @@ export const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
                     />
                 </div>
 
-                <button className="relative rounded-full p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors">
-                    <Bell size={20} />
-                    <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
-                </button>
+                <div className="relative group">
+                    <button className="relative rounded-full p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors">
+                        <Bell size={20} />
+                        {(notifications?.filter(n => !n.read).length || 0) > 0 && (
+                            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
+                        )}
+                    </button>
+
+                    {/* Notification Dropdown */}
+                    <div className="absolute right-0 mt-2 w-80 translate-y-2 opacity-0 invisible group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out z-50">
+                        <div className="rounded-xl border border-slate-200 bg-white shadow-xl overflow-hidden">
+                            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 bg-slate-50/50">
+                                <h3 className="font-semibold text-slate-900">Notifications</h3>
+                                <button className="text-xs text-primary-600 hover:text-primary-700 font-medium">
+                                    Mark all as read
+                                </button>
+                            </div>
+                            <div className="max-h-[300px] overflow-y-auto">
+                                {!notifications || notifications.length === 0 ? (
+                                    <div className="p-4 text-center text-sm text-slate-500">
+                                        No notifications yet
+                                    </div>
+                                ) : (
+                                    notifications.map((notification) => (
+                                        <div
+                                            key={notification.id}
+                                            className={`border-b border-slate-100 p-4 last:border-0 hover:bg-slate-50 transition-colors ${!notification.read ? 'bg-blue-50/30' : ''}`}
+                                        >
+                                            <div className="mb-1 flex items-start gap-3">
+                                                <div className={`mt-1 h-2 w-2 shrink-0 rounded-full ${!notification.read ? 'bg-blue-500' : 'bg-transparent'}`} />
+                                                <div>
+                                                    <p className="text-sm text-slate-900 font-medium">
+                                                        {notification.type === 'PROPOSAL_RECEIVED' && 'New Proposal Received'}
+                                                        {notification.type === 'CONTRACT_CREATED' && 'Contract Created'}
+                                                        {notification.type === 'PAYMENT_RECEIVED' && 'Payment Received'}
+                                                    </p>
+                                                    <p className="text-xs text-slate-500 mt-0.5 max-w-[220px] truncate">
+                                                        {notification.type === 'PROPOSAL_RECEIVED' && `Proposal for ${notification.payload.jobTitle}`}
+                                                        {notification.type === 'CONTRACT_CREATED' && `New contract with ${notification.payload.clientName}`}
+                                                    </p>
+                                                    <span className="text-[10px] text-slate-400 mt-1 block">
+                                                        {new Date(notification.createdAt).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
     );

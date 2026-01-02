@@ -6,8 +6,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { JobCard } from "@/components/ui/JobCard";
-import { useAPI } from "@/lib/api";
-import { useState } from "react";
+import { useAPI, apiRequest } from "@/lib/api";
+import { useState, useEffect } from "react";
+import { useDebounce } from "@/lib/hooks"; // Assuming a useDebounce hook exists or I'll implement a simple one/use timeout
 
 interface Job {
     id: number;
@@ -20,6 +21,7 @@ interface Job {
     deadline: string;
     status: string;
     createdAt: string;
+    isSaved?: boolean;
     client?: {
         id: number;
         firstName: string;
@@ -32,14 +34,38 @@ interface Job {
 }
 
 export default function BrowseJobsPage() {
-    const [activeTab, setActiveTab] = useState("Best Match");
+    const [activeTab, setActiveTab] = useState("Most Recent");
     const [searchQuery, setSearchQuery] = useState("");
 
-    const { data: jobs, isLoading, error } = useAPI<Job[]>('/api/jobs', { autoFetch: true });
+    // Simple debounce to prevent API spam
+    const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500);
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
 
-    const handleSearch = () => {
-        // TODO: Implement search functionality
-        console.log("Searching for:", searchQuery);
+    // Construct API URL with params
+    const getEndpoint = () => {
+        const params = new URLSearchParams();
+        if (debouncedSearch) params.append('search', debouncedSearch);
+
+        if (activeTab === "Saved Jobs") params.append('tab', 'Saved Jobs');
+        else if (activeTab === "Best Match") params.append('tab', 'Best Match');
+
+        return `/api/jobs?${params.toString()}`;
+    };
+
+    const { data: jobs, isLoading, error, mutate } = useAPI<Job[]>(getEndpoint(), { autoFetch: true });
+
+    const handleSaveJob = async (e: React.MouseEvent, jobId: number) => {
+        e.stopPropagation();
+        try {
+            await apiRequest(`/api/jobs/${jobId}/save`, { method: 'POST' });
+            // Optimistic update or refetch
+            mutate(); // Refetch to update list
+        } catch (err) {
+            console.error("Failed to save job", err);
+        }
     };
 
     // Calculate time ago from createdAt
@@ -67,20 +93,12 @@ export default function BrowseJobsPage() {
                         <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                         <input
                             type="text"
-                            placeholder="Search for jobs..."
+                            placeholder="Search by title, skill, or keyword..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                             className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 text-base focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
                         />
                     </div>
-                    <Button variant="outline" className="hidden sm:inline-flex">
-                        <Filter className="mr-2 h-4 w-4" />
-                        Filters
-                    </Button>
-                    <Button onClick={handleSearch}>
-                        Search
-                    </Button>
                 </div>
             </div>
 
@@ -116,23 +134,50 @@ export default function BrowseJobsPage() {
                 <div className="flex items-center justify-center py-12">
                     <div className="text-center">
                         <p className="text-lg font-medium text-slate-900">No jobs found</p>
-                        <p className="text-sm text-slate-500">Check back later for new opportunities</p>
+                        <p className="text-sm text-slate-500">
+                            {activeTab === "Saved Jobs"
+                                ? "You haven't saved any jobs yet."
+                                : "Try adjusting your search filters."}
+                        </p>
                     </div>
                 </div>
             ) : (
                 <div className="grid gap-4">
                     {jobs.map((job) => (
-                        <JobCard
-                            key={job.id}
-                            title={job.title}
-                            companyName={job.client ? `${job.client.firstName} ${job.client.lastName}` : "Anonymous Client"}
-                            budget={`$${job.budgetMin}-${job.budgetMax}/hr`}
-                            type="Hourly"
-                            skills={job.skills || []}
-                            postedTime={getTimeAgo(job.createdAt)}
-                            description={job.description}
-                            onClick={() => window.location.href = `/dashboard/freelancer/jobs/${job.id}`}
-                        />
+                        <div key={job.id} className="relative group">
+                            <JobCard
+                                title={job.title}
+                                companyName={job.client ? `${job.client.firstName} ${job.client.lastName}` : "Anonymous Client"}
+                                budget={`$${job.budgetMin}-${job.budgetMax}/hr`}
+                                type="Hourly"
+                                skills={job.skills || []}
+                                postedTime={getTimeAgo(job.createdAt)}
+                                description={job.description}
+                                onClick={() => window.location.href = `/dashboard/freelancer/jobs/${job.id}`}
+                            />
+                            {/* Save Button Overlay */}
+                            <button
+                                onClick={(e) => handleSaveJob(e, job.id)}
+                                className={`absolute top-6 right-6 p-2 rounded-full transition-colors z-10 ${job.isSaved
+                                    ? "text-primary-600 bg-primary-50 hover:bg-primary-100"
+                                    : "text-slate-400 hover:text-primary-600 hover:bg-slate-50"
+                                    }`}
+                                title={job.isSaved ? "Unsave Job" : "Save Job"}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill={job.isSaved ? "currentColor" : "none"}
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="h-5 w-5"
+                                >
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                                </svg>
+                            </button>
+                        </div>
                     ))}
                 </div>
             )}
