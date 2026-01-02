@@ -130,10 +130,9 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                         })}
                     </nav>
 
-                    {/* Footer User Profile */}
+                    {/* Footer Logout Button */}
                     <div className="border-t border-slate-100 p-4">
-                        <div
-                            className="flex items-center gap-3 rounded-xl p-2 hover:bg-slate-50 transition-colors cursor-pointer group"
+                        <button
                             onClick={async () => {
                                 try {
                                     document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
@@ -142,14 +141,11 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                     console.error("Logout failed", e);
                                 }
                             }}
+                            className="flex w-full items-center justify-center gap-2 rounded-xl p-3 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-red-600 transition-colors"
                         >
-                            <div className="h-10 w-10 rounded-full bg-slate-200" />
-                            <div className="flex-1 overflow-hidden">
-                                <p className="truncate text-sm font-medium text-slate-900">{displayName}</p>
-                                <p className="truncate text-xs text-slate-500">{displayEmail}</p>
-                            </div>
-                            <LogOut className="h-4 w-4 text-slate-400 group-hover:text-red-500 transition-colors" />
-                        </div>
+                            <LogOut className="h-4 w-4" />
+                            Logout
+                        </button>
                     </div>
                 </div>
             </aside>

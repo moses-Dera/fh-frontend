@@ -2,71 +2,59 @@
 
 import {
     Search,
-    MapPin,
-    Clock,
-    DollarSign,
     Filter
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { JobCard } from "@/components/ui/JobCard";
+import { useAPI } from "@/lib/api";
 import { useState } from "react";
+
+interface Job {
+    id: number;
+    title: string;
+    description: string;
+    category?: string;
+    skills?: string[];
+    budgetMin: string;
+    budgetMax: string;
+    deadline: string;
+    status: string;
+    createdAt: string;
+    client?: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    _count?: {
+        proposal: number;
+    };
+}
 
 export default function BrowseJobsPage() {
     const [activeTab, setActiveTab] = useState("Best Match");
+    const [searchQuery, setSearchQuery] = useState("");
 
-    const jobs = [
-        {
-            id: "1",
-            title: "Senior UX/UI Designer for Fintech App",
-            company: "Stripe",
-            budget: "$60-80/hr",
-            type: "Hourly",
-            skills: ["Figma", "Prototyping", "Mobile Design"],
-            postedTime: "2 hours ago",
-            description: "We are looking for an experienced product designer to help us redesign our core mobile application. You will work directly with our product team to create intuitive and beautiful user experiences.",
-        },
-        {
-            id: "2",
-            title: "React Native Developer",
-            company: "Coinbase",
-            budget: "$50-65/hr",
-            type: "Hourly",
-            skills: ["React Native", "iOS", "Android"],
-            postedTime: "1 day ago",
-            description: "Looking for a React Native expert to help us ship new features for our crypto trading app. Must have experience with native modules.",
-        },
-        {
-            id: "3",
-            title: "Full Stack Developer (Next.js)",
-            company: "Vercel",
-            budget: "$5k-8k",
-            type: "Fixed-Price",
-            skills: ["Next.js", "TypeScript", "PostgreSQL"],
-            postedTime: "4 hours ago",
-            description: "Need a developer to build a new marketing site with a headless CMS integration. Must be proficient in Next.js 14 and Server Components.",
-        },
-        {
-            id: "4",
-            title: "Technical Writer for API Documentation",
-            company: "Twilio",
-            budget: "$40/hr",
-            type: "Hourly",
-            skills: ["Technical Writing", "API", "Markdown"],
-            postedTime: "2 days ago",
-            description: "We need a technical writer to help us update our API documentation. You will work closely with our engineering team to ensure accuracy.",
-        },
-        {
-            id: "4",
-            title: "Technical Writer for API Documentation",
-            company: "Twilio",
-            budget: "$40/hr",
-            type: "Hourly",
-            skills: ["Technical Writing", "API", "Markdown"],
-            postedTime: "2 days ago",
-            description: "We need a technical writer to help us update our API documentation. You will work closely with our engineering team to ensure accuracy.",
-        }
+    const { data: jobs, isLoading, error } = useAPI<Job[]>('/api/jobs', { autoFetch: true });
 
-    ] as const;
+    const handleSearch = () => {
+        // TODO: Implement search functionality
+        console.log("Searching for:", searchQuery);
+    };
+
+    // Calculate time ago from createdAt
+    const getTimeAgo = (dateString: string) => {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInMs = now.getTime() - date.getTime();
+        const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+        const diffInDays = Math.floor(diffInHours / 24);
+
+        if (diffInHours < 1) return "Just now";
+        if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+        if (diffInDays < 7) return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+        return date.toLocaleDateString();
+    };
 
     return (
         <div className="space-y-6">
@@ -80,6 +68,9 @@ export default function BrowseJobsPage() {
                         <input
                             type="text"
                             placeholder="Search for jobs..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                             className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 text-base focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
                         />
                     </div>
@@ -87,7 +78,7 @@ export default function BrowseJobsPage() {
                         <Filter className="mr-2 h-4 w-4" />
                         Filters
                     </Button>
-                    <Button>
+                    <Button onClick={handleSearch}>
                         Search
                     </Button>
                 </div>
@@ -101,8 +92,8 @@ export default function BrowseJobsPage() {
                             key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium transition-colors ${activeTab === tab
-                                    ? "border-primary-600 text-primary-600"
-                                    : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700"
+                                ? "border-primary-600 text-primary-600"
+                                : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700"
                                 }`}
                         >
                             {tab}
@@ -111,20 +102,40 @@ export default function BrowseJobsPage() {
                 </nav>
             </div>
 
-            <div className="grid gap-4">
-                {jobs.map((job) => (
-                    <JobCard
-                        key={job.id}
-                        title={job.title}
-                        companyName={job.company}
-                        budget={job.budget}
-                        type={job.type as any}
-                        skills={job.skills as any}
-                        postedTime={job.postedTime}
-                        description={job.description}
-                    />
-                ))}
-            </div>
+            {/* Jobs List */}
+            {isLoading ? (
+                <div className="flex items-center justify-center py-12">
+                    <div className="text-slate-500">Loading jobs...</div>
+                </div>
+            ) : error ? (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+                    <p className="font-medium">Error loading jobs</p>
+                    <p className="text-sm">{error.message}</p>
+                </div>
+            ) : !jobs || jobs.length === 0 ? (
+                <div className="flex items-center justify-center py-12">
+                    <div className="text-center">
+                        <p className="text-lg font-medium text-slate-900">No jobs found</p>
+                        <p className="text-sm text-slate-500">Check back later for new opportunities</p>
+                    </div>
+                </div>
+            ) : (
+                <div className="grid gap-4">
+                    {jobs.map((job) => (
+                        <JobCard
+                            key={job.id}
+                            title={job.title}
+                            companyName={job.client ? `${job.client.firstName} ${job.client.lastName}` : "Anonymous Client"}
+                            budget={`$${job.budgetMin}-${job.budgetMax}/hr`}
+                            type="Hourly"
+                            skills={job.skills || []}
+                            postedTime={getTimeAgo(job.createdAt)}
+                            description={job.description}
+                            onClick={() => window.location.href = `/dashboard/freelancer/jobs/${job.id}`}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

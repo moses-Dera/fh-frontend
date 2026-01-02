@@ -40,10 +40,12 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
         try {
             errorData = JSON.parse(text);
         } catch {
-            errorData = { message: `API Error: ${res.statusText} (${res.status})` };
+            errorData = { error: `API Error: ${res.statusText} (${res.status})` };
         }
 
-        throw new Error(errorData.message || `API Error: ${res.statusText}`);
+        // Extract the actual error message from backend
+        const errorMessage = errorData.error || errorData.message || `API Error: ${res.statusText}`;
+        throw new Error(errorMessage);
     }
 
     return res.json();

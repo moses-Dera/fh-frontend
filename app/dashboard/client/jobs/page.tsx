@@ -116,7 +116,13 @@ export default function MyJobsPage() {
                                             </span>
                                             <span>Budget</span>
                                         </div>
-                                        <div className="flex items-center gap-1.5">
+                                        <div
+                                            className="flex items-center gap-1.5 cursor-pointer hover:text-primary-600"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                window.location.href = `/dashboard/client/jobs/${item.id}/proposals`;
+                                            }}
+                                        >
                                             <span className="font-medium text-slate-900">
                                                 {item._count?.proposal || 0}
                                             </span>

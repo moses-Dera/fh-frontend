@@ -54,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico?v=2" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#4F46E5" />
       </head>

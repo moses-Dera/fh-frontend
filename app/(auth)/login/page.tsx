@@ -35,10 +35,16 @@ export default function LoginPage() {
                     console.log('Login Response Data:', data);
 
                     if (data && typeof data.token === 'string' && data.token.length > 0) {
-                        // Store token in cookie (secure, httpOnly would be better server-side, but strictly client-side for now)
+                        // Store token in cookie
                         document.cookie = `auth_token=${data.token}; path=/; max-age=86400; SameSite=Strict`;
-                        // Redirect based on role (could come from user object)
-                        window.location.href = "/dashboard/client";
+
+                        // Redirect based on user's actual role
+                        const userRole = data.user?.role?.toLowerCase();
+                        if (userRole === 'freelancer') {
+                            window.location.href = "/dashboard/freelancer";
+                        } else {
+                            window.location.href = "/dashboard/client";
+                        }
                     } else {
                         console.error("Login failed: Invalid token received", data);
                         setError("Login failed: Server response invalid.");

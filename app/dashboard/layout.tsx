@@ -9,21 +9,6 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-    return (
-        <div className="flex min-h-screen bg-slate-50">
-            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-
-            <div className="flex flex-1 flex-col">
-                <DashboardHeader onMenuClick={() => setIsSidebarOpen(true)} />
-
-                <main className="flex-1 p-4 md:p-8">
-                    <div className="mx-auto max-w-7xl">
-                        {children}
-                    </div>
-                </main>
-            </div>
-        </div>
-    );
+    // Role-specific layouts (client/freelancer) handle the full dashboard structure
+    return <>{children}</>;
 }

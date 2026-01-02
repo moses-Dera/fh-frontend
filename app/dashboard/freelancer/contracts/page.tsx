@@ -1,63 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { DataFrame } from "@/components/ui/DataFrame"; // Assuming DataTable was meant, but keeping imports consistent or correcting if needed. Wait, previous code used DataTable. Let's stick to consistent DataTable usage from other pages if possible or use the one available.
 import { DataTable } from "@/components/ui/DataTable";
-import { apiRequest } from "@/lib/api";
+import { useAPI } from "@/lib/api";
 import { BadgeCheck, Clock, AlertCircle } from "lucide-react";
 
 interface Contract {
-    id: string;
-    jobTitle: string;
-    clientName: string;
+    id: number;
     amount: number;
-    status: 'active' | 'completed' | 'disputed' | 'pending_approval';
+    status: string;
     startDate: string;
+    job: {
+        title: string;
+    };
+    client: {
+        firstName: string;
+        lastName: string;
+    };
 }
 
 export default function FreelancerContractsPage() {
-    const [contracts, setContracts] = useState<Contract[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchContracts = async () => {
-            try {
-                // Mock data used until API is confirmed live
-                setContracts([
-                    {
-                        id: "c-1",
-                        jobTitle: "Senior React Developer",
-                        clientName: "TechFlow Inc.",
-                        amount: 2400,
-                        status: "active",
-                        startDate: "2024-05-15"
-                    },
-                    {
-                        id: "c-4",
-                        jobTitle: "Blog Writing 101",
-                        clientName: "ContentKing",
-                        amount: 150,
-                        status: "completed",
-                        startDate: "2024-04-20"
-                    }
-                ]);
-            } catch (error) {
-                console.error("Failed to fetch contracts", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchContracts();
-    }, []);
+    const { data: contracts, isLoading, error } = useAPI<Contract[]>('/api/contracts', { autoFetch: true });
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case 'active':
+            case 'ACTIVE':
                 return <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800"><Clock size={12} /> Active</span>;
-            case 'completed':
+            case 'COMPLETED':
                 return <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800"><BadgeCheck size={12} /> Completed</span>;
-            case 'pending_approval':
-                return <span className="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800"><AlertCircle size={12} /> Pending Approval</span>;
+            case 'PENDING':
+                return <span className="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800"><AlertCircle size={12} /> Pending</span>;
             default:
                 return <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-800">{status}</span>;
         }
@@ -69,45 +41,56 @@ export default function FreelancerContractsPage() {
                 <h1 className="text-2xl font-bold text-slate-900">My Contracts</h1>
             </div>
 
-            <DataTable
-                data={contracts}
-                columns={[
-                    {
-                        header: "Job & Client",
-                        accessorKey: "jobTitle",
-                        cell: (item) => (
-                            <div>
-                                <div className="font-semibold text-slate-900">{item.jobTitle}</div>
-                                <div className="text-xs text-slate-500">{item.clientName}</div>
-                            </div>
-                        ),
-                    },
-                    {
-                        header: "Earnings",
-                        accessorKey: "amount",
-                        cell: (item) => <span className="font-medium">${item.amount.toLocaleString()}</span>
-                    },
-                    {
-                        header: "Start Date",
-                        accessorKey: "startDate",
-                        cell: (item) => <span className="text-slate-500">{new Date(item.startDate).toLocaleDateString()}</span>
-                    },
-                    {
-                        header: "Status",
-                        accessorKey: "status",
-                        cell: (item) => getStatusBadge(item.status)
-                    },
-                    {
-                        header: "Actions",
-                        accessorKey: "id", // Using ID for actions column
-                        cell: (item) => (
-                            <button className="text-sm font-medium text-primary-600 hover:text-primary-700">
-                                View / Submit Work
-                            </button>
-                        )
-                    }
-                ]}
-            />
+            {isLoading ? (
+                <div className="text-center py-12 text-slate-500">Loading contracts...</div>
+            ) : error ? (
+                <div className="text-center py-12 text-red-500">Error loading contracts</div>
+            ) : !contracts || contracts.length === 0 ? (
+                <div className="text-center py-12 text-slate-500">No contracts found.</div>
+            ) : (
+                <DataTable
+                    data={contracts}
+                    columns={[
+                        {
+                            header: "Job & Client",
+                            accessorKey: "job",
+                            cell: (item: Contract) => (
+                                <div>
+                                    <div className="font-semibold text-slate-900">{item.job.title}</div>
+                                    <div className="text-xs text-slate-500">{item.client.firstName} {item.client.lastName}</div>
+                                </div>
+                            ),
+                        },
+                        {
+                            header: "Earnings",
+                            accessorKey: "amount",
+                            cell: (item: Contract) => <span className="font-medium">${item.amount.toLocaleString()}</span>
+                        },
+                        {
+                            header: "Start Date",
+                            accessorKey: "startDate",
+                            cell: (item: Contract) => <span className="text-slate-500">{new Date(item.startDate).toLocaleDateString()}</span>
+                        },
+                        {
+                            header: "Status",
+                            accessorKey: "status",
+                            cell: (item: Contract) => getStatusBadge(item.status)
+                        },
+                        {
+                            header: "Actions",
+                            accessorKey: "id",
+                            cell: (item: Contract) => (
+                                <button
+                                    onClick={() => window.location.href = `/dashboard/freelancer/contracts/${item.id}`}
+                                    className="text-sm font-medium text-primary-600 hover:text-primary-700"
+                                >
+                                    View Details
+                                </button>
+                            )
+                        }
+                    ]}
+                />
+            )}
         </div>
     );
 }
