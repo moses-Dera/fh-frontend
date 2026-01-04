@@ -3,6 +3,7 @@
 import { DataTable } from "@/components/ui/DataTable";
 import { useAPI } from "@/lib/api";
 import { StatusBadge } from "@/components/ui/Shared";
+import { PageLoader } from "@/components/ui/PageLoader";
 
 interface Proposal {
     id: string;
@@ -37,9 +38,7 @@ export default function MyProposalsPage() {
             </div>
 
             {isLoading ? (
-                <div className="flex items-center justify-center py-12">
-                    <div className="text-slate-500">Loading proposals...</div>
-                </div>
+                <PageLoader message="Loading proposals..." />
             ) : error ? (
                 <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
                     <p className="font-medium">Error loading proposals</p>
@@ -85,10 +84,10 @@ export default function MyProposalsPage() {
                             accessorKey: "status",
                             cell: (item: Proposal) => (
                                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${item.status === 'ACCEPTED' ? 'bg-emerald-100 text-emerald-800' :
-                                        item.status === 'PENDING' ? 'bg-blue-100 text-blue-800' :
-                                            item.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
-                                                item.status === 'SHORTLISTED' ? 'bg-yellow-100 text-yellow-800' :
-                                                    'bg-slate-100 text-slate-500'
+                                    item.status === 'PENDING' ? 'bg-blue-100 text-blue-800' :
+                                        item.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
+                                            item.status === 'SHORTLISTED' ? 'bg-yellow-100 text-yellow-800' :
+                                                'bg-slate-100 text-slate-500'
                                     }`}>
                                     {item.status}
                                 </span>

@@ -7,6 +7,7 @@ import { MapPin, DollarSign, Filter, Clock } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { PageLoader } from "@/components/ui/PageLoader";
 
 interface Job {
     id: string;
@@ -96,7 +97,7 @@ export default function JobsPage() {
                     {/* Job List */}
                     <div className="lg:col-span-3 space-y-4">
                         {isLoading ? (
-                            <div>Loading jobs...</div>
+                            <PageLoader message="Loading jobs..." />
                         ) : (
                             <>
                                 {displayJobs.map((job) => (

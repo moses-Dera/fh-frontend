@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { useAPI } from "@/lib/api";
 import { useState, useEffect } from "react";
 import { User, Mail, Phone, MapPin, Code } from "lucide-react";
+import { PageLoader } from "@/components/ui/PageLoader";
 
 interface UserProfile {
     id: string;
@@ -49,7 +50,7 @@ export default function FreelancerSettingsPage() {
         }
     };
 
-    if (isLoading) return <div>Loading profile...</div>;
+    if (isLoading) return <PageLoader message="Loading profile..." />;
 
     const displayProfile = formData || profile || {
         id: "2",

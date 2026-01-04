@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { apiRequest } from "@/lib/api";
 import { useSearchParams, useRouter } from "next/navigation";
+import { PageLoader } from "@/components/ui/PageLoader";
 
 function ResetPasswordForm() {
     const searchParams = useSearchParams();
@@ -148,7 +149,7 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<PageLoader />}>
                 <ResetPasswordForm />
             </Suspense>
         </div>

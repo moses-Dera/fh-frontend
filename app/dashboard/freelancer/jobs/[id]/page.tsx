@@ -2,6 +2,7 @@
 
 import { useAPI, apiRequest } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { useToast } from "@/components/ui/Toast";
 import { Clock, DollarSign, Calendar, Briefcase, ArrowLeft } from "lucide-react";
 import { useState } from "react";
@@ -86,9 +87,7 @@ export default function JobDetailsPage() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center py-12">
-                <div className="text-slate-500">Loading job details...</div>
-            </div>
+            <PageLoader message="Loading job details..." />
         );
     }
 
@@ -122,8 +121,8 @@ export default function JobDetailsPage() {
                         </p>
                     </div>
                     <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${job.status === 'OPEN' ? 'bg-green-50 text-green-700' :
-                            job.status === 'ASSIGNED' ? 'bg-blue-50 text-blue-700' :
-                                'bg-slate-50 text-slate-700'
+                        job.status === 'ASSIGNED' ? 'bg-blue-50 text-blue-700' :
+                            'bg-slate-50 text-slate-700'
                         }`}>
                         {job.status}
                     </span>

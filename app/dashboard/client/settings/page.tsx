@@ -6,6 +6,7 @@ import { useAPI } from "@/lib/api";
 import { useAuthStore } from "@/lib/store";
 import { useState, useEffect } from "react";
 import { User, Mail, Phone, MapPin, Building } from "lucide-react";
+import { PageLoader } from "@/components/ui/PageLoader";
 
 interface UserProfile {
     id: string;
@@ -61,7 +62,7 @@ export default function ClientSettingsPage() {
         }
     };
 
-    if (isLoading) return <div>Loading profile...</div>;
+    if (isLoading) return <PageLoader message="Loading profile..." />;
     // Mock fallback if API fails (for demo)
     const displayProfile = formData || profile || {
         id: "1",

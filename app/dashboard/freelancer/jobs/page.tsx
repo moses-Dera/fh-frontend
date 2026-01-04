@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { JobCard } from "@/components/ui/JobCard";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { useAPI, apiRequest } from "@/lib/api";
 import { useState, useEffect } from "react";
 import { useDebounce } from "@/lib/hooks"; // Assuming a useDebounce hook exists or I'll implement a simple one/use timeout
@@ -122,9 +123,7 @@ export default function BrowseJobsPage() {
 
             {/* Jobs List */}
             {isLoading ? (
-                <div className="flex items-center justify-center py-12">
-                    <div className="text-slate-500">Loading jobs...</div>
-                </div>
+                <PageLoader message="Loading jobs..." />
             ) : error ? (
                 <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
                     <p className="font-medium">Error loading jobs</p>
