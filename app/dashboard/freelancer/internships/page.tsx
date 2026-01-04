@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar"; // Assuming user is not logged in? Or Dashboard? Let's check path. It's dashboard/freelancer. So Sidebar/Header is likely used.
 import { PageHeader } from "@/components/ui/Shared"; // Or similar dashboard header
 import { Search, Filter, Sparkles, Globe, ExternalLink } from "lucide-react";
@@ -14,6 +14,12 @@ export default function InternshipFinderPage() {
     const [isSearching, setIsSearching] = useState(false);
     const [internships, setInternships] = useState<Internship[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
+
+    // Initial load
+    useEffect(() => {
+        // Trigger a default search for general tech/remote internships
+        handleSearch(undefined, "Remote Tech Internships");
+    }, []);
 
     // Mock for initial development, will replace with API call
     const handleSearch = async (e?: React.FormEvent, overrideQuery?: string) => {
@@ -123,45 +129,45 @@ export default function InternshipFinderPage() {
                                 </p>
                             </div>
                         </div>
-
-                        {/* Top Resources Section */}
-                        <div>
-                            <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                                <Globe className="h-5 w-5 text-blue-500" />
-                                Top Websites for Global Internships
-                            </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                {[
-                                    { name: "LinkedIn", url: "https://www.linkedin.com/jobs/internships", desc: "Global network for professionals", color: "bg-blue-600" },
-                                    { name: "Glassdoor", url: "https://www.glassdoor.com/Job/internship-jobs", desc: "Salaries & Company Reviews", color: "bg-green-600" },
-                                    { name: "Wellfound", url: "https://wellfound.com/jobs?role_types=Internship", desc: "Best for Startup Internships", color: "bg-slate-900" },
-                                    { name: "Y Combinator", url: "https://www.workatastartup.com/internships", desc: "Top Tier Startup Roles", color: "bg-orange-500" },
-                                    { name: "Chegg Internships", url: "https://www.chegg.com/internships", desc: "Student Focused", color: "bg-orange-400" },
-                                    { name: "Idealist", url: "https://www.idealist.org/en/internships", desc: "Non-profit & Social Impact", color: "bg-teal-600" },
-                                    { name: "WayUp", url: "https://www.wayup.com/", desc: "Entry-level & Internships", color: "bg-purple-600" },
-                                    { name: "Indeed", url: "https://www.indeed.com/q-Internship-jobs.html", desc: "Massive Job Aggregator", color: "bg-blue-700" },
-                                ].map((site) => (
-                                    <a
-                                        key={site.name}
-                                        href={site.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group flex flex-col p-5 rounded-xl border border-slate-200 bg-white hover:border-blue-200 hover:shadow-md transition-all"
-                                    >
-                                        <div className="flex items-start justify-between mb-3">
-                                            <div className={`h-10 w-10 rounded-lg ${site.color} text-white flex items-center justify-center font-bold text-lg`}>
-                                                {site.name[0]}
-                                            </div>
-                                            <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-blue-500 transition-colors" />
-                                        </div>
-                                        <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{site.name}</h3>
-                                        <p className="text-xs text-slate-500 mt-1">{site.desc}</p>
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
                     </div>
                 )}
+            </div>
+
+            {/* Top Resources Section (Always Visible) */}
+            <div className="pt-8 border-t border-slate-200">
+                <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <Globe className="h-5 w-5 text-blue-500" />
+                    Top Websites for Global Internships
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[
+                        { name: "LinkedIn", url: "https://www.linkedin.com/jobs/internships", desc: "Global network for professionals", color: "bg-blue-600" },
+                        { name: "Glassdoor", url: "https://www.glassdoor.com/Job/internship-jobs", desc: "Salaries & Company Reviews", color: "bg-green-600" },
+                        { name: "Wellfound", url: "https://wellfound.com/jobs?role_types=Internship", desc: "Best for Startup Internships", color: "bg-slate-900" },
+                        { name: "Y Combinator", url: "https://www.workatastartup.com/internships", desc: "Top Tier Startup Roles", color: "bg-orange-500" },
+                        { name: "Chegg Internships", url: "https://www.chegg.com/internships", desc: "Student Focused", color: "bg-orange-400" },
+                        { name: "Idealist", url: "https://www.idealist.org/en/internships", desc: "Non-profit & Social Impact", color: "bg-teal-600" },
+                        { name: "WayUp", url: "https://www.wayup.com/", desc: "Entry-level & Internships", color: "bg-purple-600" },
+                        { name: "Indeed", url: "https://www.indeed.com/q-Internship-jobs.html", desc: "Massive Job Aggregator", color: "bg-blue-700" },
+                    ].map((site) => (
+                        <a
+                            key={site.name}
+                            href={site.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex flex-col p-5 rounded-xl border border-slate-200 bg-white hover:border-blue-200 hover:shadow-md transition-all"
+                        >
+                            <div className="flex items-start justify-between mb-3">
+                                <div className={`h-10 w-10 rounded-lg ${site.color} text-white flex items-center justify-center font-bold text-lg`}>
+                                    {site.name[0]}
+                                </div>
+                                <ExternalLink className="h-4 w-4 text-slate-300 group-hover:text-blue-500 transition-colors" />
+                            </div>
+                            <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{site.name}</h3>
+                            <p className="text-xs text-slate-500 mt-1">{site.desc}</p>
+                        </a>
+                    ))}
+                </div>
             </div>
         </div>
     );
