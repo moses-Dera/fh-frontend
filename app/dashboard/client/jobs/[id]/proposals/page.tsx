@@ -3,6 +3,7 @@
 import { useAPI, apiRequest } from "@/lib/api";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { ArrowLeft, User, DollarSign, Calendar, FileText } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -78,9 +79,7 @@ export default function JobProposalsPage() {
 
     if (jobLoading || proposalsLoading) {
         return (
-            <div className="flex items-center justify-center py-12">
-                <div className="text-slate-500">Loading proposals...</div>
-            </div>
+            <PageLoader message="Loading proposals..." />
         );
     }
 
@@ -143,9 +142,9 @@ export default function JobProposalsPage() {
 
                                 {/* Status Badge */}
                                 <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${proposal.status === 'ACCEPTED' ? 'bg-green-50 text-green-700' :
-                                        proposal.status === 'REJECTED' ? 'bg-red-50 text-red-700' :
-                                            proposal.status === 'SHORTLISTED' ? 'bg-blue-50 text-blue-700' :
-                                                'bg-yellow-50 text-yellow-700'
+                                    proposal.status === 'REJECTED' ? 'bg-red-50 text-red-700' :
+                                        proposal.status === 'SHORTLISTED' ? 'bg-blue-50 text-blue-700' :
+                                            'bg-yellow-50 text-yellow-700'
                                     }`}>
                                     {proposal.status}
                                 </span>

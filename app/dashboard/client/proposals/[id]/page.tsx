@@ -4,6 +4,7 @@ import { useAPI, apiRequest } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import { PageHeader, StatusBadge } from "@/components/ui/Shared";
 import { Button } from "@/components/ui/Button";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { ArrowLeft, Clock, DollarSign, Star, Calendar } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -75,7 +76,7 @@ export default function ProposalDetailsPage() {
         }
     };
 
-    if (isLoading) return <div className="p-8">Loading proposal details...</div>;
+    if (isLoading) return <PageLoader message="Loading proposal details..." />;
     if (error) return <div className="p-8 text-red-500">Error: {error.message}</div>;
     if (!proposal) return <div className="p-8">Proposal not found</div>;
 

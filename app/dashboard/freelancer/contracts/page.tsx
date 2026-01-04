@@ -1,7 +1,7 @@
 "use client";
 
-import { DataFrame } from "@/components/ui/DataFrame"; // Assuming DataTable was meant, but keeping imports consistent or correcting if needed. Wait, previous code used DataTable. Let's stick to consistent DataTable usage from other pages if possible or use the one available.
 import { DataTable } from "@/components/ui/DataTable";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { useAPI } from "@/lib/api";
 import { BadgeCheck, Clock, AlertCircle } from "lucide-react";
 
@@ -42,7 +42,7 @@ export default function FreelancerContractsPage() {
             </div>
 
             {isLoading ? (
-                <div className="text-center py-12 text-slate-500">Loading contracts...</div>
+                <PageLoader message="Loading contracts..." />
             ) : error ? (
                 <div className="text-center py-12 text-red-500">Error loading contracts</div>
             ) : !contracts || contracts.length === 0 ? (

@@ -2,6 +2,7 @@
 
 import { PageHeader, StatusBadge } from "@/components/ui/Shared";
 import { DataTable } from "@/components/ui/DataTable";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { useToast } from "@/components/ui/Toast";
 import { useAPI, apiRequest } from "@/lib/api";
 import { Plus, Clock } from "lucide-react";
@@ -97,7 +98,7 @@ export default function MyJobsPage() {
             </div>
 
             {isLoading ? (
-                <div>Loading...</div>
+                <PageLoader message="Loading jobs..." />
             ) : (
                 <DataTable
                     data={displayJobs}

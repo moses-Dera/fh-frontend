@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Clock, DollarSign, Tag, Calendar, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/Button"; // Assuming Button component exists
+import { PageLoader } from "@/components/ui/PageLoader";
 
 export default function JobDetailPage() {
     // In Next 15/16, params might be asynchronous in server components, 
@@ -14,7 +15,7 @@ export default function JobDetailPage() {
 
     const { data: job, isLoading, error } = useAPI<any>(`/api/jobs/${id}`, { autoFetch: true });
 
-    if (isLoading) return <div className="p-8 text-slate-500">Loading job details...</div>;
+    if (isLoading) return <PageLoader message="Loading job details..." />;
     if (error) return <div className="p-8 text-red-500">Error loading job: {error.message}</div>;
     if (!job) return <div className="p-8 text-slate-500">Job not found</div>;
 

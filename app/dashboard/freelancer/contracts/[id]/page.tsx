@@ -6,6 +6,7 @@ import { PageHeader, StatusBadge } from "@/components/ui/Shared";
 import { ArrowLeft, Calendar, DollarSign, Clock } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { PageLoader } from "@/components/ui/PageLoader";
 
 interface ContractDetails {
     id: number;
@@ -33,7 +34,7 @@ export default function FreelancerContractDetailsPage() {
     const id = params?.id as string;
     const { data: contract, isLoading, error } = useAPI<ContractDetails>(`/api/contracts/${id}`, { autoFetch: true });
 
-    if (isLoading) return <div className="p-8">Loading contract...</div>;
+    if (isLoading) return <PageLoader message="Loading contract..." />;
     if (error) return <div className="p-8 text-red-500">Error: {error.message}</div>;
     if (!contract) return <div className="p-8">Contract not found</div>;
 

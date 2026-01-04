@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useAPI, apiRequest } from "@/lib/api";
 import { useToast } from "@/components/ui/Toast";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { useParams, useRouter } from "next/navigation";
 
 // Define Job interface locally or import it. 
@@ -116,7 +117,7 @@ export default function EditJobPage() {
         }
     };
 
-    if (isLoadingData) return <div className="p-8">Loading job details...</div>;
+    if (isLoadingData) return <PageLoader message="Loading job details..." />;
 
     return (
         <div className="max-w-3xl mx-auto space-y-8 pb-12">

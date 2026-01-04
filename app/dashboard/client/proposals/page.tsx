@@ -2,6 +2,7 @@
 
 import { PageHeader, StatusBadge } from "@/components/ui/Shared";
 import { ProposalCard } from "@/components/ui/Cards";
+import { PageLoader } from "@/components/ui/PageLoader";
 import { useAPI } from "@/lib/api";
 import { useSearchParams } from "next/navigation";
 
@@ -46,7 +47,7 @@ export default function ClientProposalsPage() {
             />
 
             {isLoading ? (
-                <div>Loading proposals...</div>
+                <PageLoader message="Loading proposals..." />
             ) : error ? (
                 <div className="text-red-500">Error loading proposals</div>
             ) : (
