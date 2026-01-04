@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuthStore } from "@/lib/store";
 import { apiRequest } from "@/lib/api";
+import { Verifying } from "@/components/ui/Verifying";
 
 export function RoleGuard({ children, requiredRole }: { children: React.ReactNode, requiredRole: 'client' | 'freelancer' }) {
     const { updateUser } = useAuthStore();
@@ -54,11 +55,7 @@ export function RoleGuard({ children, requiredRole }: { children: React.ReactNod
 
     // Show loading state while checking
     if (isChecking) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="text-slate-600">Verifying access...</div>
-            </div>
-        );
+        return <Verifying message="Verifying access..." />;
     }
 
     // Only render children if authorized
