@@ -7,9 +7,15 @@ export async function POST(request: Request) {
         const { to, subject, html, text, apiKey } = body;
 
         // Secure this endpoint
-        if (apiKey !== process.env.INTERNAL_API_KEY) {
+        const envKey = process.env.INTERNAL_API_KEY;
+        console.log(`[Email API Debug] Received Key: '${apiKey}' (len: ${apiKey?.length})`);
+        console.log(`[Email API Debug] Env Key: '${envKey}' (len: ${envKey?.length})`);
+        console.log(`[Email API Debug] Match: ${apiKey === envKey}`);
+
+        if (apiKey !== envKey) {
+            console.warn('[Email API Debug] Authentication Failed');
             return NextResponse.json(
-                { error: 'Unauthorized' },
+                { error: 'Unauthorized', debug: { receivedLen: apiKey?.length, envLen: envKey?.length } },
                 { status: 401 }
             );
         }
