@@ -16,16 +16,20 @@ export default function InternshipFinderPage() {
     const [hasSearched, setHasSearched] = useState(false);
 
     // Mock for initial development, will replace with API call
-    const handleSearch = async (e?: React.FormEvent) => {
+    const handleSearch = async (e?: React.FormEvent, overrideQuery?: string) => {
         if (e) e.preventDefault();
-        if (!query.trim()) return;
+        const searchQuery = overrideQuery || query;
+        if (!searchQuery.trim()) return;
+
+        // If overriding, update state to match
+        if (overrideQuery) setQuery(overrideQuery);
 
         setIsSearching(true);
         setHasSearched(true);
         setInternships([]); // Clear previous
 
         try {
-            const res = await fetch(`/api/internships?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`/api/internships?q=${encodeURIComponent(searchQuery)}`);
             const data = await res.json();
             if (data.internships) {
                 setInternships(data.internships);
@@ -78,7 +82,8 @@ export default function InternshipFinderPage() {
                     {["Remote", "Frontend", "Backend", "Marketing", "Design", "Machine Learning"].map(tag => (
                         <button
                             key={tag}
-                            onClick={() => { setQuery(tag); }}
+                            onClick={() => handleSearch(undefined, tag)}
+                            type="button"
                             className="bg-white/60 border border-slate-200/60 px-3 py-1 rounded-full text-xs font-medium text-slate-600 hover:bg-white hover:text-purple-600 hover:border-purple-200 transition-all cursor-pointer"
                         >
                             {tag}

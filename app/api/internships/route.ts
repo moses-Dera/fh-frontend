@@ -18,7 +18,8 @@ export async function GET(request: Request) {
         console.log(`[Gemini API] Key present: ${!!apiKey}, Length: ${apiKey?.length}`);
 
         const genAI = new GoogleGenerativeAI(apiKey || '');
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        // Use gemini-1.5-flash as it is the current standard and widely available
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `
             Act as an internship aggregator. Find me 15-20 diverse and realistic, recent internship opportunities related to "${query}" for 2024/2025.
@@ -55,34 +56,19 @@ export async function GET(request: Request) {
         console.error("Gemini Search Error:", error);
 
         // Fallback Mock Data if API fails or key missing
-        const mockInternships = [
-            {
-                id: "mock-1",
-                title: `${query} Intern`,
-                company: "Tech Solutions Inc",
-                location: "Remote",
-                type: "Remote",
-                stipend: "$20/hr",
-                duration: "3 months",
-                platform: "LinkedIn",
-                applyLink: "https://linkedin.com",
-                tags: ["React", "TypeScript"],
-                postedAt: "1 day ago"
-            },
-            {
-                id: "mock-2",
-                title: "Junior Developer",
-                company: "StartUp Flow",
-                location: "Hybrid",
-                type: "Hybrid",
-                stipend: "$1500/mo",
-                duration: "6 months",
-                platform: "Indeed",
-                applyLink: "https://indeed.com",
-                tags: ["Frontend", "Design"],
-                postedAt: "3 days ago"
-            }
-        ];
+        const mockInternships = Array.from({ length: 15 }).map((_, i) => ({
+            id: `mock-${i}`,
+            title: i % 2 === 0 ? "Software Engineer Intern" : "Product Design Intern",
+            company: ["Tech Global", "StartupX", "InnovateOne", "Future Systems", "Design Corp"][i % 5],
+            location: ["Remote", "New York", "London", "Berlin", "San Francisco"][i % 5],
+            type: i % 3 === 0 ? "Remote" : "Hybrid",
+            stipend: i % 4 === 0 ? "Unpaid" : "$25-$35/hr",
+            duration: "3-6 months",
+            platform: ["LinkedIn", "Indeed", "Glassdoor"][i % 3],
+            applyLink: "#",
+            tags: ["React", "Node.js", "Design", "Figma"].slice(0, 2),
+            postedAt: `${i + 1} days ago`
+        }));
 
         return NextResponse.json({ internships: mockInternships });
     }
