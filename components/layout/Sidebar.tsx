@@ -11,7 +11,8 @@ import {
     Settings,
     LogOut,
     X,
-    DollarSign
+    DollarSign,
+    Sparkles
 } from "lucide-react";
 import { useAuthStore } from "@/lib/store";
 import { apiRequest } from "@/lib/api";
@@ -61,6 +62,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const freelancerNavigation = [
         { name: "Overview", href: "/dashboard/freelancer", icon: LayoutDashboard },
         { name: "Browse Jobs", href: "/dashboard/freelancer/jobs", icon: Briefcase },
+        { name: "Internships", href: "/dashboard/freelancer/internships", icon: Sparkles },
         { name: "My Proposals", href: "/dashboard/freelancer/proposals", icon: FileText },
         { name: "My Contracts", href: "/dashboard/freelancer/contracts", icon: FileText },
         { name: "Earnings", href: "/dashboard/freelancer/payments", icon: DollarSign },

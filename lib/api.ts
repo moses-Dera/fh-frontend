@@ -34,7 +34,7 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
             // Optional: redirect or dispatch logout
         }
         const text = await res.text();
-        console.error(`API Error (${res.status} to ${endpoint}):`, text);
+        // console.error(`API Error (${res.status} to ${endpoint}):`, text);
 
         let errorData;
         try {

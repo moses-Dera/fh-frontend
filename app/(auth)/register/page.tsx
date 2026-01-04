@@ -34,7 +34,7 @@ export default function RegisterPage() {
                 password: password,
                 role: data.role === 'Hire Talent' ? 'CLIENT' : 'FREELANCER'
             };
-            console.log("Registering with payload:", payload);
+            // console.log("Registering with payload:", payload);
 
             const res = await apiRequest<{ token: string }>('/api/auth/register', {
                 method: 'POST',

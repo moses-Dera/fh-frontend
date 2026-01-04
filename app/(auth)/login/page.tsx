@@ -32,7 +32,7 @@ export default function LoginPage() {
                         body: { email, password }
                     });
 
-                    console.log('Login Response Data:', data);
+                    // console.log('Login Response Data:', data);
 
                     if (data && typeof data.token === 'string' && data.token.length > 0) {
                         // Store token in cookie
@@ -46,11 +46,11 @@ export default function LoginPage() {
                             window.location.href = "/dashboard/client";
                         }
                     } else {
-                        console.error("Login failed: Invalid token received", data);
+                        // console.error("Login failed: Invalid token received", data);
                         setError("Login failed: Server response invalid.");
                     }
                 } catch (err: any) {
-                    console.error("Login error object:", err);
+                    // console.error("Login error object:", err);
                     setError(err.message || "Login failed");
                 } finally {
                     setIsLoading(false);
