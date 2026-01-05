@@ -23,8 +23,26 @@ export const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
     // Simple breadcrumb logic
     const getPageTitle = () => {
         const parts = pathname.split("/").filter(Boolean);
+
+        // If last part is a number (ID), use the second-to-last part with "Details" suffix
         const lastPart = parts[parts.length - 1];
-        if (!lastPart || lastPart === "client") return "Overview";
+        const secondLast = parts[parts.length - 2];
+
+        // Check if it's an ID (numeric or UUID-like)
+        const isId = /^[0-9a-f-]+$/i.test(lastPart) && lastPart.length > 2;
+
+        if (isId && secondLast) {
+            // Format: "Jobs" -> "Job Details", "contracts" -> "Contract Details"
+            const singular = secondLast.endsWith('s') ? secondLast.slice(0, -1) : secondLast;
+            return singular.charAt(0).toUpperCase() + singular.slice(1) + " Details";
+        }
+
+        if (!lastPart || lastPart === "client" || lastPart === "freelancer") return "Overview";
+
+        // Handle special named routes
+        if (lastPart === "new") return "New " + (secondLast?.slice(0, -1).charAt(0).toUpperCase() + secondLast?.slice(0, -1).slice(1) || "Item");
+        if (lastPart === "edit") return "Edit";
+
         return lastPart.charAt(0).toUpperCase() + lastPart.slice(1);
     };
 
