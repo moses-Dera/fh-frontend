@@ -8,6 +8,7 @@ import { InternshipCard, Internship } from "@/components/ui/InternshipCard";
 import { PageLoader } from "@/components/ui/PageLoader";
 import { Button } from "@/components/ui/Button";
 import { useAuthStore } from "@/lib/store";
+import { searchInternships } from "./actions";
 
 export default function InternshipFinderPage() {
     const [query, setQuery] = useState("");
@@ -35,10 +36,9 @@ export default function InternshipFinderPage() {
         setInternships([]); // Clear previous
 
         try {
-            const res = await fetch(`/api/internships?q=${encodeURIComponent(searchQuery)}`);
-            const data = await res.json();
-            if (data.internships) {
-                setInternships(data.internships);
+            const result = await searchInternships(searchQuery);
+            if (result.internships) {
+                setInternships(result.internships);
             }
         } catch (error) {
             // Silently log for developer debugging if needed, but don't expose to UI

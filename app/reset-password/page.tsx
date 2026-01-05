@@ -37,11 +37,11 @@ function ResetPasswordForm() {
         }
 
         try {
-            await apiRequest('/api/auth/reset-password', {
+            const data = await apiRequest<{ message: string }>('/api/auth/reset-password', {
                 method: 'POST',
                 body: { token, newPassword: password }
             });
-            setMessage("Password reset successfully! You can now login with your new password.");
+            setMessage(data.message || "Password reset successfully! You can now login with your new password.");
             setTimeout(() => {
                 router.push("/login");
             }, 2000);
