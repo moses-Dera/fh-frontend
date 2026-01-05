@@ -30,14 +30,14 @@ export const JobCard = ({
             onClick={onClick}
             className="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition-all hover:border-primary-200 hover:shadow-lg hover:shadow-primary-900/5 cursor-pointer"
         >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between pr-10">
                 <div>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary-600 transition-colors">
                         {title}
                     </h3>
                     <p className="text-sm font-medium text-slate-500 mt-1">{companyName}</p>
                 </div>
-                <span className="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700">
+                <span className="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-medium text-primary-700 shrink-0">
                     {type}
                 </span>
             </div>

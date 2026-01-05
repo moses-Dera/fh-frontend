@@ -27,7 +27,7 @@ export const Button = ({
         outline: "border-2 border-slate-200 text-slate-700 hover:border-primary-600 hover:text-primary-600 bg-transparent",
         ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
         white: "bg-white text-slate-900 hover:bg-slate-50 border-none shadow-sm",
-        glass: "bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm",
+        glass: "bg-white/20 text-white hover:bg-white/30 border border-white/30 backdrop-blur-sm font-semibold",
     };
 
     const sizes = {

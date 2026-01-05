@@ -157,8 +157,8 @@ export default function BrowseJobsPage() {
                             {/* Save Button Overlay */}
                             <button
                                 onClick={(e) => handleSaveJob(e, job.id)}
-                                className={`absolute top-6 right-6 p-2 rounded-full transition-colors z-10 ${job.isSaved
-                                    ? "text-primary-600 bg-primary-50 hover:bg-primary-100"
+                                className={`absolute top-4 right-4 p-2 rounded-full transition-colors z-10 bg-white shadow-sm border border-slate-200 ${job.isSaved
+                                    ? "text-primary-600 hover:bg-primary-50"
                                     : "text-slate-400 hover:text-primary-600 hover:bg-slate-50"
                                     }`}
                                 title={job.isSaved ? "Unsave Job" : "Save Job"}

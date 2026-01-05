@@ -34,7 +34,10 @@ export default function ClientPaymentsPage() {
                         <Plus className="mr-2 h-4 w-4" />
                         Add Funds
                     </Button>
-                    <Button variant="glass" onClick={() => alert("Withdraw Feature: Coming soon!")}>
+                    <Button
+                        className="border-2 border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white transition-colors bg-white"
+                        onClick={() => alert("Withdraw Feature: Coming soon!")}
+                    >
                         Withdraw
                     </Button>
                 </div>

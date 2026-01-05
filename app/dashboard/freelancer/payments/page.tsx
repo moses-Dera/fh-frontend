@@ -31,7 +31,7 @@ export default function FreelancerPaymentsPage() {
                     <div className="text-4xl font-bold mb-8">
                         ${availableBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </div>
-                    <Button className="bg-white text-slate-900 hover:bg-slate-100 border-none w-full sm:w-auto">
+                    <Button className="bg-white/10 text-slate-900 hover:bg-slate-100 border-none w-full sm:w-auto">
                         <ArrowDownLeft className="mr-2 h-4 w-4" />
                         Withdraw Funds
                     </Button>
@@ -58,10 +58,6 @@ export default function FreelancerPaymentsPage() {
             <div>
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold text-slate-900">Transaction History</h2>
-                    <Button variant="ghost" size="sm">
-                        <Download className="mr-2 h-4 w-4" />
-                        Download Statement
-                    </Button>
                 </div>
 
                 <DataTable
