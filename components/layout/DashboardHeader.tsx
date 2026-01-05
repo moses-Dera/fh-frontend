@@ -28,10 +28,11 @@ export const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
         const lastPart = parts[parts.length - 1];
         const secondLast = parts[parts.length - 2];
 
-        // Check if it's an ID (numeric or UUID-like)
-        const isId = /^[0-9a-f-]+$/i.test(lastPart) && lastPart.length > 2;
+        // Check if it's an ID (numeric or UUID-like) OR if secondLast is a known collection
+        const collectionPaths = ['jobs', 'contracts', 'proposals', 'payments', 'internships', 'users'];
+        const isDetailPage = secondLast && collectionPaths.includes(secondLast.toLowerCase());
 
-        if (isId && secondLast) {
+        if (isDetailPage) {
             // Format: "Jobs" -> "Job Details", "contracts" -> "Contract Details"
             const singular = secondLast.endsWith('s') ? secondLast.slice(0, -1) : secondLast;
             return singular.charAt(0).toUpperCase() + singular.slice(1) + " Details";

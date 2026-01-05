@@ -14,11 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "FreelanceHub - Connect with Top Freelancers & Clients",
+    default: "FreelanceHub - Freelance Jobs, Internships & Top Talent",
     template: "%s | FreelanceHub"
   },
-  description: "FreelanceHub is the premier platform connecting talented freelancers with clients worldwide. Post jobs, submit proposals, manage contracts, and grow your business.",
-  keywords: ["freelance", "freelancer", "jobs", "remote work", "hire freelancers", "find work", "contracts", "proposals"],
+  description: "FreelanceHub connects freelancers and reliable interns with clients worldwide. Post jobs or internships, submit proposals, and grow your career or business.",
+  keywords: ["freelance", "freelancer", "jobs", "internships", "interns", "remote work", "hire freelancers", "hire interns", "find work", "contracts", "proposals"],
   authors: [{ name: "FreelanceHub" }],
   creator: "FreelanceHub",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
@@ -27,15 +27,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "FreelanceHub - Connect with Top Freelancers & Clients",
-    description: "The premier platform connecting talented freelancers with clients worldwide.",
+    title: "FreelanceHub - Freelance Jobs, Internships & Top Talent",
+    description: "The premier platform connecting talented freelancers and ambitious interns with clients worldwide.",
     siteName: "FreelanceHub",
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "FreelanceHub - Connect with Top Freelancers & Clients",
-    description: "The premier platform connecting talented freelancers with clients worldwide.",
+    title: "FreelanceHub - Freelance Jobs, Internships & Top Talent",
+    description: "The premier platform connecting talented freelancers and ambitious interns with clients worldwide.",
   },
 
   robots: {

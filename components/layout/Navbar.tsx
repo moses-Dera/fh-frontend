@@ -4,9 +4,23 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/Button";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const router = useRouter();
+
+    const handleProtectedNavigation = (e: React.MouseEvent, path: string) => {
+        e.preventDefault();
+        // Check for token in localStorage (simple auth check)
+        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+        if (!token) {
+            router.push('/login');
+        } else {
+            router.push(path);
+        }
+    };
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
@@ -26,18 +40,20 @@ export const Navbar = () => {
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex gap-8">
-                        <Link
+                        <a
                             href="/jobs"
-                            className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
+                            onClick={(e) => handleProtectedNavigation(e, '/jobs')}
+                            className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors cursor-pointer"
                         >
                             Find Work
-                        </Link>
-                        <Link
+                        </a>
+                        <a
                             href="/talent"
-                            className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
+                            onClick={(e) => handleProtectedNavigation(e, '/talent')}
+                            className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors cursor-pointer"
                         >
                             Hire Talent
-                        </Link>
+                        </a>
                         <Link
                             href="/why-us"
                             className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors"
@@ -72,20 +88,20 @@ export const Navbar = () => {
             {isMenuOpen && (
                 <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 shadow-lg">
                     <nav className="flex flex-col space-y-4">
-                        <Link
+                        <a
                             href="/jobs"
-                            className="text-base font-medium text-slate-600 hover:text-primary-600"
-                            onClick={() => setIsMenuOpen(false)}
+                            onClick={(e) => { setIsMenuOpen(false); handleProtectedNavigation(e, '/jobs'); }}
+                            className="text-base font-medium text-slate-600 hover:text-primary-600 cursor-pointer"
                         >
                             Find Work
-                        </Link>
-                        <Link
+                        </a>
+                        <a
                             href="/talent"
-                            className="text-base font-medium text-slate-600 hover:text-primary-600"
-                            onClick={() => setIsMenuOpen(false)}
+                            onClick={(e) => { setIsMenuOpen(false); handleProtectedNavigation(e, '/talent'); }}
+                            className="text-base font-medium text-slate-600 hover:text-primary-600 cursor-pointer"
                         >
                             Hire Talent
-                        </Link>
+                        </a>
                         <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
                             <Link href="/login" onClick={() => setIsMenuOpen(false)}>
                                 <Button variant="ghost" fullWidth>Log In</Button>

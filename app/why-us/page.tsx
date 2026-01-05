@@ -83,7 +83,7 @@ export default function WhyUsPage() {
                             Join thousands of businesses who use FreelanceHub to get work done.
                         </p>
                         <Link href="/register">
-                            <Button size="lg" className="bg-white text-primary-900 hover:bg-slate-100 border-transparent">
+                            <Button size="lg" className="bg-white/10 text-primary-900 hover:bg-slate-100 border-transparent">
                                 Join Now
                             </Button>
                         </Link>
