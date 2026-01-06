@@ -7,7 +7,7 @@
     "rewrites": [
         {
             "source": "/api/:path*",
-            "destination": "https://your-backend-url.vercel.app/api/:path*"
+            "destination": "http://freelancehub-backend-n868.onrender.com/api/:path*"
         }
     ],
     "headers": [
