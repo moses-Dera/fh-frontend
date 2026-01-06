@@ -31,7 +31,7 @@ export default function FreelancerPaymentsPage() {
                     <div className="text-4xl font-bold mb-8">
                         ${availableBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </div>
-                    <Button className="bg-white/10 text-slate-900 hover:bg-slate-100 border-none w-full sm:w-auto">
+                    <Button className="bg-white/10 text-slate-900 hover:bg-slate-100/50 border-none w-full sm:w-auto">
                         <ArrowDownLeft className="mr-2 h-4 w-4" />
                         Withdraw Funds
                     </Button>
