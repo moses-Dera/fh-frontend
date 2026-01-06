@@ -99,9 +99,7 @@ To start the production server:
 npm start
 ```
 
-## 🧪 Testing
 
-(Include instructions if tests are added in the future, e.g., `npm test`)
 
 ## 🤝 Contributing
 
