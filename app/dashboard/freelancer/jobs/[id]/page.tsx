@@ -64,8 +64,9 @@ export default function JobDetailsPage() {
             addToast("Proposal submitted successfully!", "success");
             setShowProposalModal(false);
             router.push("/dashboard/freelancer/proposals");
-        } catch (err: any) {
-            addToast(err.message || "Failed to submit proposal", "error");
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : "Failed to submit proposal";
+            addToast(errorMessage, "error");
         } finally {
             setIsSubmitting(false);
         }

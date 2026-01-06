@@ -40,13 +40,12 @@ export const Navbar = () => {
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex gap-8">
-                        <a
+                        <Link
                             href="/jobs"
-                            onClick={(e) => handleProtectedNavigation(e, '/jobs')}
                             className="text-sm font-medium text-slate-600 hover:text-primary-600 transition-colors cursor-pointer"
                         >
                             Find Work
-                        </a>
+                        </Link>
                         <a
                             href="/talent"
                             onClick={(e) => handleProtectedNavigation(e, '/talent')}
@@ -88,13 +87,13 @@ export const Navbar = () => {
             {isMenuOpen && (
                 <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 shadow-lg">
                     <nav className="flex flex-col space-y-4">
-                        <a
+                        <Link
                             href="/jobs"
-                            onClick={(e) => { setIsMenuOpen(false); handleProtectedNavigation(e, '/jobs'); }}
+                            onClick={() => setIsMenuOpen(false)}
                             className="text-base font-medium text-slate-600 hover:text-primary-600 cursor-pointer"
                         >
                             Find Work
-                        </a>
+                        </Link>
                         <a
                             href="/talent"
                             onClick={(e) => { setIsMenuOpen(false); handleProtectedNavigation(e, '/talent'); }}

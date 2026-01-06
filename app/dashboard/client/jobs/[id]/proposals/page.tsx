@@ -57,8 +57,9 @@ export default function JobProposalsPage() {
             await apiRequest(`/api/proposals/${proposalId}/approve`, { method: 'PUT' });
             addToast("Proposal approved! Contract has been created.", "success");
             refreshProposals();
-        } catch (err: any) {
-            addToast(err.message || "Failed to approve proposal", "error");
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : "Failed to approve proposal";
+            addToast(errorMessage, "error");
         } finally {
             setProcessingId(null);
         }
@@ -70,8 +71,9 @@ export default function JobProposalsPage() {
             await apiRequest(`/api/proposals/${proposalId}/reject`, { method: 'PUT' });
             addToast("Proposal rejected", "success");
             refreshProposals();
-        } catch (err: any) {
-            addToast(err.message || "Failed to reject proposal", "error");
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : "Failed to reject proposal";
+            addToast(errorMessage, "error");
         } finally {
             setProcessingId(null);
         }

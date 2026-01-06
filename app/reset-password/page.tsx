@@ -45,8 +45,8 @@ function ResetPasswordForm() {
             setTimeout(() => {
                 router.push("/login");
             }, 2000);
-        } catch (err: any) {
-            setError(err.message || "Failed to reset password. Token may be invalid or expired.");
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Failed to reset password. Token may be invalid or expired.");
         } finally {
             setIsLoading(false);
         }

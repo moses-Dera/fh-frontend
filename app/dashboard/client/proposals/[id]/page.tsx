@@ -2,10 +2,10 @@
 
 import { useAPI, apiRequest } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
-import { PageHeader, StatusBadge } from "@/components/ui/Shared";
+import { StatusBadge } from "@/components/ui/Shared";
 import { Button } from "@/components/ui/Button";
 import { PageLoader } from "@/components/ui/PageLoader";
-import { ArrowLeft, Clock, DollarSign, Star, Calendar } from "lucide-react";
+import { ArrowLeft, DollarSign, Star, Calendar } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useToast } from "@/components/ui/Toast";
@@ -68,9 +68,10 @@ export default function ProposalDetailsPage() {
             addToast("Contract created successfully!", "success");
             router.push('/dashboard/client/contracts');
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Failed to hire:", err);
-            addToast(err.message || "Failed to create contract", "error");
+            const errorMessage = err instanceof Error ? err.message : "Failed to create contract";
+            addToast(errorMessage, "error");
         } finally {
             setIsHiring(false);
         }

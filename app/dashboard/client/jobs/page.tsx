@@ -6,7 +6,7 @@ import { PageLoader } from "@/components/ui/PageLoader";
 import { useToast } from "@/components/ui/Toast";
 import { useAPI, apiRequest } from "@/lib/api";
 import { Plus, Clock } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 interface Job {
@@ -23,7 +23,7 @@ interface Job {
 }
 
 export default function MyJobsPage() {
-    const { data: jobs, isLoading, error, execute } = useAPI<Job[]>('/api/jobs', { autoFetch: true });
+    const { data: jobs, isLoading, execute } = useAPI<Job[]>('/api/jobs', { autoFetch: true });
     const { addToast } = useToast();
     const [deleteId, setDeleteId] = useState<string | number | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

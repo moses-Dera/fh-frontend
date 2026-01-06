@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { useAPI, apiRequest } from "@/lib/api";
+import { apiRequest } from "@/lib/api";
 import { useToast } from "@/components/ui/Toast";
 import { PageLoader } from "@/components/ui/PageLoader";
 import { useParams, useRouter } from "next/navigation";

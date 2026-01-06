@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { MapPin, Clock, DollarSign } from "lucide-react";
-import { Button } from "./Button";
+import { Clock, DollarSign } from "lucide-react";
 
 interface JobCardProps {
     title: string;

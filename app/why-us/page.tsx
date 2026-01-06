@@ -41,7 +41,7 @@ export default function WhyUsPage() {
                             Why Choose FreelanceHub?
                         </h1>
                         <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-                            We're building the most trusted workplace for the world. Whether you're a startup or a Fortune 500, we make it easy to find and hire top talent.
+                            We&apos;re building the most trusted workplace for the world. Whether you&apos;re a startup or a Fortune 500, we make it easy to find and hire top talent.
                         </p>
                         <div className="flex justify-center gap-4">
                             <Link href="/register">
@@ -83,7 +83,7 @@ export default function WhyUsPage() {
                             Join thousands of businesses who use FreelanceHub to get work done.
                         </p>
                         <Link href="/register">
-                            <Button size="lg" className="bg-white/10 text-primary-900 hover:bg-slate-100 border-transparent">
+                            <Button size="lg" className="bg-white/10 text-primary-900 hover:bg-slate-100/50 border-transparent">
                                 Join Now
                             </Button>
                         </Link>

@@ -72,7 +72,7 @@ export function ConfirmationModal({
                         // If Button doesn't support 'danger', we'll use a specific className styling or primary.
                         // I'll assume Button component is flexible or I can wrap it.
                         // Let's safe-guard the variant.
-                        variant={(confirmVariant === 'danger' ? 'primary' : confirmVariant) as any}
+                        variant={confirmVariant === 'danger' ? 'primary' : confirmVariant}
                         className={confirmVariant === 'danger' ? "bg-red-600 hover:bg-red-700 text-white border-transparent" : ""}
                         onClick={onConfirm}
                         isLoading={isLoading}

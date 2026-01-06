@@ -20,13 +20,26 @@ interface UserProfile {
 }
 
 export default function FreelancerSettingsPage() {
-    const { data: profile, isLoading, error, execute: fetchProfile } = useAPI<UserProfile>('/api/users/profile', { autoFetch: true });
+    const { data: profile, isLoading } = useAPI<UserProfile>('/api/users/profile', { autoFetch: true });
     const { execute: updateProfile, isLoading: isUpdating } = useAPI('/api/users/profile', { method: 'PUT' });
 
-    const [formData, setFormData] = useState<UserProfile | null>(null);
+    // Initialize form data with profile when available
+    const [formData, setFormData] = useState<UserProfile>(() => ({
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        role: "",
+        title: "",
+        skills: [],
+        phone: "",
+        location: ""
+    }));
 
+    // Update form data when profile loads
     useEffect(() => {
         if (profile) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFormData(profile);
         }
     }, [profile]);

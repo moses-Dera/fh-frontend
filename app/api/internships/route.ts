@@ -32,7 +32,7 @@ export async function GET(request: Request) {
         const data = await response.json();
 
         // Map organic results to Internship interface
-        const internships = (data.organic || []).map((item: any, index: number) => {
+        const internships = (data.organic || []).map((item: { title: string; source?: string; link: string; date?: string }, index: number) => {
             const domain = new URL(item.link).hostname.replace('www.', '');
             return {
                 id: `serp-${index}-${Date.now()}`,

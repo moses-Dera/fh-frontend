@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { DataTable } from "@/components/ui/DataTable";
-import { CreditCard, DollarSign, Download, Plus } from "lucide-react";
+import { CreditCard, Plus, Download } from "lucide-react";
 
 export default function ClientPaymentsPage() {
     const [balance] = useState(1250.00);

@@ -16,7 +16,6 @@ interface Contract {
 
 export default function ClientContractsPage() {
     const [contracts, setContracts] = useState<Contract[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchContracts = async () => {
@@ -25,8 +24,6 @@ export default function ClientContractsPage() {
                 setContracts(data);
             } catch (error) {
                 console.error("Failed to fetch contracts", error);
-            } finally {
-                setIsLoading(false);
             }
         };
 

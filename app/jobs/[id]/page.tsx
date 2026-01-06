@@ -40,7 +40,6 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [job, setJob] = useState<JobDetails | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState("");
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -48,7 +47,7 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
                 // Fetch job details from API
                 const data = await apiRequest<JobDetails>(`/api/jobs/${resolvedParams.id}`);
                 setJob(data);
-            } catch (err: any) {
+            } catch (err: unknown) {
                 console.error("Failed to fetch job:", err);
                 // Fallback mock data
                 setJob({

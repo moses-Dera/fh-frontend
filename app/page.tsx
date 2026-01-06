@@ -241,7 +241,7 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-slate-600 mb-4 text-sm leading-relaxed">
-                  "FreelanceHub has completely transformed how I find high-quality clients. The platform is intuitive and the payments are always on time."
+                  &quot;FreelanceHub has completely transformed how I find high-quality clients. The platform is intuitive and the payments are always on time.&quot;
                 </p>
                 <div className="h-2 w-24 bg-slate-100 rounded-full"></div>
               </div>
@@ -268,8 +268,8 @@ export default function Home() {
                 title={job.title}
                 companyName={job.company}
                 budget={job.budget}
-                type={job.type as any}
-                skills={job.skills as any}
+                type={job.type}
+                skills={[...job.skills]}
                 postedTime={job.postedTime}
                 description={job.description}
               />

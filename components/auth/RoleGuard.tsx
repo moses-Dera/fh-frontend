@@ -19,7 +19,7 @@ export function RoleGuard({ children, requiredRole }: { children: React.ReactNod
         const checkRole = async () => {
             try {
                 // Fetch user profile to get their actual role
-                const profile = await apiRequest<any>('/api/users/profile');
+                const profile = await apiRequest<{ id: string; role: string; email: string; firstName: string; lastName: string; companyName?: string }>('/api/users/profile');
 
                 const userRole = profile.role.toLowerCase();
 
@@ -51,7 +51,7 @@ export function RoleGuard({ children, requiredRole }: { children: React.ReactNod
         };
 
         checkRole();
-    }, [requiredRole]); // Remove updateUser from dependencies
+    }, [requiredRole, updateUser]);
 
     // Show loading state while checking
     if (isChecking) {

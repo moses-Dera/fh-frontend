@@ -2,8 +2,8 @@
 
 import { useAPI } from "@/lib/api";
 import { useParams } from "next/navigation";
-import { PageHeader, StatusBadge } from "@/components/ui/Shared";
-import { ArrowLeft, Calendar, DollarSign, CheckCircle, Clock } from "lucide-react";
+import { StatusBadge } from "@/components/ui/Shared";
+import { ArrowLeft, Calendar, DollarSign, Clock } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { PageLoader } from "@/components/ui/PageLoader";
@@ -25,8 +25,8 @@ interface ContractDetails {
         lastName: string;
         email: string;
     };
-    milestones: any[];
-    payments: any[];
+    milestones: { id: string; title: string; dueDate: string; amount: number; status: string }[];
+    payments: unknown[];
 }
 
 export default function ContractDetailsPage() {
@@ -99,7 +99,7 @@ export default function ContractDetailsPage() {
                         <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-4">Milestones</h3>
                         {contract.milestones && contract.milestones.length > 0 ? (
                             <div className="space-y-4">
-                                {contract.milestones.map((m: any) => (
+                                {contract.milestones.map((m) => (
                                     <div key={m.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors">
                                         <div>
                                             <div className="font-medium text-slate-900">{m.title}</div>

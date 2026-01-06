@@ -27,7 +27,7 @@ export default function LoginPage() {
                     const email = (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value;
                     const password = (e.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
 
-                    const data = await apiRequest<{ token: string, user: any }>('/api/auth/login', {
+                    const data = await apiRequest<{ token: string, user: { role: string } }>('/api/auth/login', {
                         method: 'POST',
                         body: { email, password }
                     });
@@ -49,9 +49,9 @@ export default function LoginPage() {
                         // console.error("Login failed: Invalid token received", data);
                         setError("Login failed: Server response invalid.");
                     }
-                } catch (err: any) {
+                } catch (err: unknown) {
                     // console.error("Login error object:", err);
-                    setError(err.message || "Login failed");
+                    setError(err instanceof Error ? err.message : "Login failed");
                 } finally {
                     setIsLoading(false);
                 }
@@ -103,7 +103,7 @@ export default function LoginPage() {
 
 
             <p className="mt-8 text-center text-sm text-slate-500">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link href="/register" className="font-semibold text-primary-600 hover:text-primary-700">
                     Sign up
                 </Link>

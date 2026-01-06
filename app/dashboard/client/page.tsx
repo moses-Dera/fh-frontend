@@ -8,8 +8,7 @@ import {
     Plus,
     Users,
     Clock,
-    CheckCircle,
-    TrendingUp
+    CheckCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StatsCard } from "@/components/dashboard/StatsCard";

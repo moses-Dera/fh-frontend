@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/Button";
 import { X, DollarSign, Clock } from "lucide-react";
 import { useAPI } from "@/lib/api";
-import { useUIStore } from "@/lib/store";
 
 interface ProposalModalProps {
     isOpen: boolean;
@@ -65,7 +64,7 @@ export const ProposalModal = ({ isOpen, onClose, jobTitle, budget, jobId }: Prop
                         Applying for: <span className="font-semibold text-slate-700">{jobTitle}</span>
                     </p>
                     <div className="mt-2 inline-flex items-center rounded-lg bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
-                        Client's Budget: {budget}
+                        Client&apos;s Budget: {budget}
                     </div>
                 </div>
 

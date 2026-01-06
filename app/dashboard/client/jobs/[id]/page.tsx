@@ -3,7 +3,7 @@
 import { useAPI } from "@/lib/api";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Clock, DollarSign, Tag, Calendar, MapPin } from "lucide-react";
+import { ArrowLeft, Clock, DollarSign, Tag, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/Button"; // Assuming Button component exists
 import { PageLoader } from "@/components/ui/PageLoader";
 
@@ -13,7 +13,7 @@ export default function JobDetailPage() {
     const params = useParams();
     const id = params?.id as string;
 
-    const { data: job, isLoading, error } = useAPI<any>(`/api/jobs/${id}`, { autoFetch: true });
+    const { data: job, isLoading, error } = useAPI<{ title: string; category?: string; createdAt: string; status: string; description: string; skills?: string[]; budgetMin: string; budgetMax: string; deadline: string }>(`/api/jobs/${id}`, { autoFetch: true });
 
     if (isLoading) return <PageLoader message="Loading job details..." />;
     if (error) return <div className="p-8 text-red-500">Error loading job: {error.message}</div>;

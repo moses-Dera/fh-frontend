@@ -7,7 +7,6 @@ import {
     LayoutDashboard,
     Briefcase,
     FileText,
-    MessageSquare,
     Settings,
     LogOut,
     X,
@@ -32,7 +31,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const profile = await apiRequest<any>('/api/users/profile');
+                const profile = await apiRequest<{ id: string; email: string; firstName: string; lastName: string; companyName?: string; role: string }>('/api/users/profile');
                 updateUser({
                     id: String(profile.id),
                     email: profile.email,
@@ -73,7 +72,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
     // Display name logic
     const displayName = user?.companyName || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User';
-    const displayEmail = user?.email || 'user@example.com';
 
     return (
         <>

@@ -41,7 +41,7 @@ export async function searchInternships(query?: string) {
 
         // Map Serper "organic" results to our Internship structure
         // Serper returns { organic: [ ... ] }
-        const internships = resultData.organic?.map((job: any) => ({
+        const internships = resultData.organic?.map((job: { link?: string; title: string; source?: string; snippet?: string; date?: string; imageUrl?: string }) => ({
             id: job.link || Math.random().toString(36).substr(2, 9),
             title: job.title,
             company: job.source || "Unknown",

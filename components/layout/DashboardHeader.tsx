@@ -11,7 +11,7 @@ interface DashboardHeaderProps {
 interface Notification {
     id: number;
     type: string;
-    payload: any;
+    payload: Record<string, unknown>;
     read: boolean;
     createdAt: string;
 }

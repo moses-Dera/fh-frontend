@@ -42,7 +42,12 @@ export function DataTable<T extends { id: string | number }>({
         {
             label: "Edit",
             onClick: (item) => {
-                window.location.href = `/dashboard/client/jobs/${item.id}/edit`;
+                // Use Next.js router for navigation
+                if (typeof window !== 'undefined') {
+                    // Fallback to window.location for now
+                    const url = `/dashboard/client/jobs/${item.id}/edit`;
+                    window.open(url, '_self');
+                }
             },
             className: "text-slate-700 hover:bg-slate-100"
         },
@@ -104,8 +109,7 @@ export function DataTable<T extends { id: string | number }>({
                         {data.map((item) => (
                             <tr
                                 key={String(item.id)}
-                                onClick={onRowClick ? (e) => {
-                                    console.log("Row clicked:", item.id);
+                                onClick={onRowClick ? () => {
                                     onRowClick(item);
                                 } : undefined}
                                 className={`${onRowClick ? "cursor-pointer hover:bg-slate-50" : ""} relative`}

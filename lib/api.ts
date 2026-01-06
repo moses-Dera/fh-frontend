@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 type RequestOptions = {
     method?: string;
     headers?: Record<string, string>;
-    body?: any;
+    body?: unknown;
     autoFetch?: boolean; // If true, fetches on mount (GET mostly)
 };
 
@@ -63,7 +63,7 @@ export function useAPI<T>(endpoint: string, options: RequestOptions = {}) {
         optionsRef.current = options;
     });
 
-    const execute = useCallback(async (overrideBody?: any, overrideOptions?: RequestOptions) => {
+    const execute = useCallback(async (overrideBody?: unknown, overrideOptions?: RequestOptions) => {
         setIsLoading(true);
         setError(null);
         try {
@@ -74,8 +74,8 @@ export function useAPI<T>(endpoint: string, options: RequestOptions = {}) {
             const result = await apiRequest<T>(endpoint, mergedOptions);
             setData(result);
             return result;
-        } catch (err: any) {
-            setError(err);
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err : new Error('Unknown error'));
             throw err;
         } finally {
             setIsLoading(false);
