@@ -40,7 +40,9 @@ export default function LoginPage() {
 
                         // Redirect based on user's actual role
                         const userRole = data.user?.role?.toLowerCase();
-                        if (userRole === 'freelancer') {
+                        if (userRole === 'admin') {
+                            window.location.href = "/dashboard/admin";
+                        } else if (userRole === 'freelancer') {
                             window.location.href = "/dashboard/freelancer";
                         } else {
                             window.location.href = "/dashboard/client";
